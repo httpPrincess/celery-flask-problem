@@ -1,2 +1,2 @@
 #!/bin/bash
-celery -A minimal.celery worker 
+celery -A app.tasks worker 
