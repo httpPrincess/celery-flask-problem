@@ -1,8 +1,9 @@
-from app import flask_app
+from app import flask_app, db
 from flask import jsonify
-from app import db
 from models import Request
 import json
+from tasks import run_workflow
+
 
 @flask_app.route('/', methods=['POST'])
 def starting_page():
@@ -15,12 +16,13 @@ def starting_page():
   context = dict()
   context['id'] = r.id
   db.session.close()
+  db.session.remove()
   run_workflow(context)
   return 'Ok', 201
 
 @flask_app.route('/', methods=['GET'])
 def get_all_requests():
-  l = Request.query.all()
+  l = db.session.query(Request).all()
   return jsonify(requests=[i.serialize for i in l])
 
 @flask_app.route('/<id>', methods=['GET'])

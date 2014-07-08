@@ -1,2 +1,2 @@
 #!/bin/bash
-celery -A app.tasks worker 
+celery -A app.tasks worker -l DEBUG
