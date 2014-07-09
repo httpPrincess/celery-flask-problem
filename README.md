@@ -1,7 +1,7 @@
 Celery-Flask Demo
 ====================
 
-Small applicaiton written to investigate the problems occuring when using Celery in Flask when Celery is using SQLAlchemy as broker.
+Small application written to investigate the problems occurring when using Celery in Flask when Celery is using SQLAlchemy as broker.
 
 Problem
 -------
@@ -10,28 +10,28 @@ time normal SQLAlchemy.Session is used (for instance by Celery) problems occure:
 
 Towards solution
 ----------------
-For the applicaiton it is possible to fix the problem in a programatical way by adding a callback that is called before Flask-SQLAlchemy
+For the application it is possible to fix the problem in a programmatic way by adding a callback that is called before Flask-SQLAlchemy
 callbacks are called:
 
-  @event.listens_for(Session, 'after_attach')
-  def my_attachement(session, intances):
-    if not hasattr(session, '_model_changes'):
-      session._model_changes = {}
+    @event.listens_for(Session, 'after_attach')
+    def my_attachement(session, intances):
+     if not hasattr(session, '_model_changes'):
+       session._model_changes = {}
 
 
-Unfortunately the same problem occures while starting the workers
+Unfortunately the same problem occurs while starting the workers
 
-   ./start_worker.sh
+    ./start_worker.sh
    
 
-Here (due to high pararelization) the registration of additional callback does not seem to work. 
+Here (due to high parallelization) the registration of additional callback does not seem to work. 
 
 
 Solution
 --------
 
-The developement version of the Flask-SQLAlchemy contains improved version of callbacks that check if the Session is instance of Flask-SQLAlchemy decorated 
+The development version of the Flask-SQLAlchemy contains improved version of callbacks that check if the Session is instance of Flask-SQLAlchemy decorated 
 session. The installation is possible through:
 
-   pip install https://github.com/mitsuhiko/flask-sqlalchemy/archive/master.zip
+    pip install https://github.com/mitsuhiko/flask-sqlalchemy/archive/master.zip
    
