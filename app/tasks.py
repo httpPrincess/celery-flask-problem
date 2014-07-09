@@ -1,4 +1,7 @@
 from celery import Celery
+from models import Request
+from app import db
+
 
 celery = Celery()
 celery.config_from_object('celeryconfig')
@@ -22,6 +25,11 @@ def run_workflow(param):
 
 def update_info(context, info):
   print 'Updating info for %s --> %s' % (context['id'], info)
+  r = Request.query.get(context['id'])
+  r.status = info
+  db.session.add(r)
+  db.session.commit()
+  db.session.close()
 
 
 

@@ -18,7 +18,7 @@ def starting_page():
   db.session.close()
   db.session.remove()
   run_workflow(context)
-  return 'Ok', 201
+  return ('Task submitted %r' % context['id']), 201
 
 @flask_app.route('/', methods=['GET'])
 def get_all_requests():
